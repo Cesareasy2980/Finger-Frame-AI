@@ -138,9 +138,7 @@ Requirements: **Node.js 24.x**, **Python 3.12**, and **FFmpeg/FFprobe on `PATH`*
 
 ```bash
 git clone https://github.com/ahmedsayed1911/Finger-Frame-AI.git
-```
-
-```bash
+cd Finger-Frame-AI
 npm install
 ```
 
