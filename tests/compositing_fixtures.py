@@ -9,7 +9,13 @@ import numpy as np
 def checkerboard(width, height, cell=20):
     y, x = np.indices((height, width))
     checker = ((x // cell + y // cell) % 2) * 180 + 40
-    image = np.stack((checker, np.roll(checker, cell // 2, axis=1), 255 - checker), axis=2)
+    # Draw on a contiguous uint8 image. np.indices yields int32 on Windows and
+    # int64 on Linux, and cv2.putText rejects the latter, so the conversion has
+    # to happen before the labels are drawn rather than after.
+    image = np.ascontiguousarray(
+        np.stack((checker, np.roll(checker, cell // 2, axis=1), 255 - checker), axis=2),
+        dtype=np.uint8,
+    )
     for label, point, color in (
         ("TL", (8, 24), (0, 0, 255)),
         ("TR", (width - 48, 24), (0, 255, 0)),
@@ -17,7 +23,7 @@ def checkerboard(width, height, cell=20):
         ("BL", (8, height - 10), (0, 255, 255)),
     ):
         cv2.putText(image, label, point, cv2.FONT_HERSHEY_SIMPLEX, 0.55, color, 2, cv2.LINE_AA)
-    return image.astype(np.uint8)
+    return image
 
 
 def solid_pair(width, height):
