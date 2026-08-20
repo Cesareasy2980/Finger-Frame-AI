@@ -1,5 +1,13 @@
 # Repository Technical Audit
 
+> [!NOTE]
+> **Historical snapshot.** This audit was taken on the pre-release codebase
+> (then named `finger-frame-effect-ai-main`) and is kept as a record of the
+> engineering review that shaped the release. It is not a description of the
+> current repository. Findings that have since been addressed include the
+> absence of a test suite — the released code ships Python and JavaScript
+> suites under `tests/` and `tests-js/`, run in CI on every push.
+
 **Repository:** `finger-frame-effect-ai-main`  
 **Audit date:** 2026-08-15  
 **Scope:** Architecture, implementation trace, local runtime checks, risks, reuse decisions, and future-feature feasibility.  
