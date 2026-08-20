@@ -1,0 +1,9 @@
+# Normalize line endings in the repository; check out native on each platform.
+* text=auto eol=lf
+
+# Binary media should never be diffed or normalized.
+*.mp4 binary
+*.mov binary
+*.gif binary
+*.png binary
+*.task binary

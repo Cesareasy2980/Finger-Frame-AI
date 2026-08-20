@@ -1,0 +1,94 @@
+NOTICE
+======
+
+This repository contains work under two different copyright situations. Read
+this file before copying, modifying, or redistributing any part of it.
+
+
+Upstream project
+----------------
+
+This project began as a derivative of:
+
+    finger-frame-effect-ai
+    https://github.com/sophiamyang/finger-frame-effect-ai
+
+At the time this repository was published, the upstream project carried **no
+license file and no license statement**. Under default copyright law that means
+all rights are reserved by its original author, and no permission to copy,
+modify, or redistribute has been granted.
+
+The upstream author retains full copyright over the upstream code and over any
+portion of it that survives in this repository.
+
+
+Upstream-derived files
+----------------------
+
+The following files descend directly from the upstream project. They contain
+substantial verbatim upstream code alongside later modifications, and they are
+**not** covered by the MIT license in LICENSE:
+
+    index.html        Static UI, layout, and styling
+    app.js            Browser application entry point and orchestration
+    composite.py      Offline frame loop, encoding, and audio muxing
+    stylize.py        Gemini video-to-video CLI
+
+No rights to these files are granted by this repository. If you want to reuse
+them, seek permission from the upstream author.
+
+
+MIT-licensed original work
+--------------------------
+
+The following modules were authored by Ahmed Sayed and are offered under the
+MIT license in LICENSE:
+
+    Browser modules
+        tracking.js                   Stabilized finger-frame tracking
+        compositing.js                Perspective portal compositing
+        portal-crossing.js            Portal Crossing state machine
+        prompt-builder.js             Deterministic prompt composition
+        gemini-request.js             Provider request boundary
+        generation-capabilities.js    Provider capability declaration
+        reference-image.js            Reference image validation
+        director.js                   AI Director request boundary
+        workflow.js                   Input validation and product state
+
+    Python modules
+        stabilized_tracker.py         Stabilized tracking state machine
+        perspective_compositor.py     Homography compositing and occlusion
+        portal_crossing.py            Portal Crossing transition logic
+
+    Supporting work
+        tests/                        Python test suite
+        tests-js/                     JavaScript test suite
+        scripts/                      Build, lint, fixture, and validation tooling
+        docs/                         Architecture and engineering documentation
+        README.md                     Project documentation
+
+Where these modules are imported by the upstream-derived files above, only the
+modules themselves are MIT-licensed; the importing file is not.
+
+
+Third-party dependencies
+------------------------
+
+This project uses the following third-party components under their own
+licenses. None of them are vendored into this repository.
+
+    MediaPipe Tasks Vision   Apache License 2.0   Google LLC
+    OpenCV                   Apache License 2.0   OpenCV team
+    NumPy                    BSD 3-Clause         NumPy developers
+    google-genai             Apache License 2.0   Google LLC
+    FFmpeg                   LGPL/GPL             FFmpeg developers
+
+The MediaPipe hand landmarker model (`hand_landmarker.task`) is downloaded at
+runtime from Google and is not redistributed here.
+
+
+Media
+-----
+
+No video, image, or demo media is published in this repository. See
+examples/README.md for what belongs there and why it is excluded.

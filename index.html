@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finger Frame AI</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0b0a10;
+      --card: rgba(255, 255, 255, 0.035);
+      --line: rgba(255, 255, 255, 0.09);
+      --text-dim: rgba(255, 255, 255, 0.6);
+      --text-faint: rgba(255, 255, 255, 0.42);
+      --accent-a: #ff6b5e;
+      --accent-b: #ffc24b;
+      --grad: linear-gradient(120deg, var(--accent-a), var(--accent-b));
+    }
+    html, body { min-height: 100%; }
+    body {
+      background:
+        radial-gradient(900px 500px at 12% -8%, rgba(255, 107, 94, 0.10), transparent 60%),
+        radial-gradient(800px 500px at 95% 30%, rgba(255, 194, 75, 0.07), transparent 55%),
+        var(--bg);
+      color: #f2f0ec;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 44px 16px 40px;
+    }
+
+    /* ---- header ---- */
+    header { text-align: center; margin-bottom: 34px; }
+    .mark {
+      position: relative;
+      width: 58px; height: 44px;
+      margin: 0 auto 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .mark i {
+      position: absolute; width: 14px; height: 14px;
+      border: 2.5px solid transparent;
+      border-image: var(--grad) 1;
+    }
+    .mark i:nth-child(1) { top: 0; left: 0; border-right: none; border-bottom: none; }
+    .mark i:nth-child(2) { top: 0; right: 0; border-left: none; border-bottom: none; }
+    .mark i:nth-child(3) { bottom: 0; left: 0; border-right: none; border-top: none; }
+    .mark i:nth-child(4) { bottom: 0; right: 0; border-left: none; border-top: none; }
+    h1 {
+      font-size: 30px;
+      letter-spacing: -0.5px;
+      background: linear-gradient(120deg, #fff 30%, var(--accent-b));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .sub {
+      font-size: 14.5px;
+      color: var(--text-dim);
+      max-width: 480px;
+      line-height: 1.55;
+      margin: 0 auto;
+    }
+    .sub b { color: #fff; font-weight: 600; }
+
+    /* ---- cards & steps ---- */
+    .card {
+      width: min(720px, 100%);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px 22px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(8px);
+    }
+    header { order: 0; }
+    #drop { order: 1; }
+    #panel { order: 2; }
+    #stage { order: 3; }
+    footer { order: 4; }
+    .step {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14.5px; font-weight: 650;
+      margin-bottom: 10px;
+    }
+    .step .n {
+      width: 22px; height: 22px; flex: none;
+      border-radius: 50%;
+      background: var(--grad);
+      color: #1a120b;
+      font-size: 12px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step .opt { color: var(--text-faint); font-weight: 400; font-size: 12.5px; }
+    .card p { font-size: 12.5px; color: var(--text-dim); line-height: 1.55; margin-bottom: 12px; }
+    .card a { color: var(--accent-b); text-decoration: none; }
+    .card a:hover { text-decoration: underline; }
+
+    input[type="password"], select, textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(0, 0, 0, 0.35);
+      color: #f2f0ec;
+      font-size: 13px;
+      margin-bottom: 10px;
+      font-family: ui-monospace, monospace;
+      resize: vertical;
+      transition: border-color 0.15s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: rgba(255, 194, 75, 0.55);
+    }
+    select, textarea { font-family: inherit; }
+    select option { background: #17151d; }
+    .remember {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 12.5px; color: var(--text-dim);
+      cursor: pointer; margin-bottom: 2px;
+    }
+    .remember input { accent-color: var(--accent-a); }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 560px) { .row2 { grid-template-columns: 1fr; } }
+    .field-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 6px;
+      display: block;
+    }
+    .field-help {
+      min-height: 31px;
+      margin: -4px 0 9px;
+      color: var(--text-faint);
+      font-size: 11.5px;
+      line-height: 1.4;
+    }
+    .prompt-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: -5px;
+      font-size: 11px;
+      color: var(--text-faint);
+    }
+    .director-row, .effect-options {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 9px; margin-top: 9px;
+    }
+    #director-status { min-height: 18px; color: var(--text-faint); font-size: 11.5px; }
+    .mini-step {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px; border-radius: 50%; margin-right: 5px;
+      background: rgba(255, 194, 75, 0.16); color: var(--accent-b);
+      font-size: 10px; letter-spacing: 0;
+    }
+    .effect-options .remember { margin: 0 14px 0 0; }
+    #prompt-validation { color: #ff9a8f; }
+    #prompt-requirement {
+      color: var(--text-faint);
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    #style-custom[aria-invalid="true"] {
+      border-color: rgba(255, 107, 94, 0.75);
+    }
+    .reference-panel {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .reference-picker, .reference-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+    .reference-picker input { position: absolute; opacity: 0; pointer-events: none; }
+    .reference-action {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 8px 13px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #f2f0ec;
+      font-size: 12.5px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+    .reference-action:hover { background: rgba(255, 255, 255, 0.1); }
+    .reference-preview {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      align-items: center;
+      gap: 13px;
+      margin-top: 12px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.22);
+    }
+    .reference-preview img {
+      width: 88px;
+      height: 66px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #09080c;
+    }
+    #reference-image-metadata { margin: 0 0 8px; overflow-wrap: anywhere; }
+    #reference-image-error { color: #ff9a8f; margin: 8px 0 0; }
+    #reference-capability-reason { color: #ffcf7b; margin: 8px 0 0; }
+
+    /* ---- drop zone ---- */
+    #drop {
+      position: relative;
+      width: min(720px, 100%);
+      border: 1.5px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 44px 24px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 16px;
+      transition: border-color 0.15s, background 0.15s, padding 0.25s;
+    }
+    #drop:hover, #drop.over {
+      border-color: rgba(255, 194, 75, 0.6);
+      background: rgba(255, 194, 75, 0.045);
+    }
+    #drop.compact { padding: 18px 24px; }
+    #drop.compact .film, #drop.compact .small { display: none; }
+    #drop input { display: none; }
+    #drop .corner {
+      position: absolute; width: 18px; height: 18px;
+      border: 2.5px solid transparent;
+      border-image: var(--grad) 1;
+      transition: all 0.2s;
+    }
+    #drop .corner.tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+    #drop .corner.tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+    #drop .corner.bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+    #drop .corner.br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+    #drop:hover .corner { width: 24px; height: 24px; }
+    #drop .film { font-size: 26px; margin-bottom: 10px; }
+    #drop .big { font-size: 15px; font-weight: 650; margin-bottom: 6px; }
+    #drop .small { font-size: 12.5px; color: var(--text-faint); }
+
+    /* ---- stage ---- */
+    #stage {
+      width: min(1060px, 100%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .canvas-wrap, .preview-card {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 10px;
+      box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.8);
+    }
+    canvas { display: block; width: 100%; border-radius: 10px; background: #000; }
+    #orig, #sty { display: none; }
+    .preview-grid { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .preview-card { min-width: 0; }
+    .preview-card h2, .canvas-wrap h2 {
+      font-size: 12px; color: var(--text-dim); margin: 0 0 8px;
+      text-transform: uppercase; letter-spacing: .08em;
+    }
+    #original-preview { width: 100%; aspect-ratio: 16 / 9; object-fit: contain; border-radius: 10px; background: #000; }
+    @media (max-width: 760px) { .preview-grid { grid-template-columns: 1fr; } }
+
+    #controls { display: flex; flex-wrap: wrap; gap: 9px; justify-content: center; }
+    button {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.05);
+      color: #f2f0ec;
+      font-size: 13.5px;
+      font-weight: 650;
+      padding: 10px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+    }
+    button:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); transform: translateY(-1px); }
+    button:active:not(:disabled) { transform: translateY(0); }
+    button:disabled { opacity: 0.35; cursor: default; }
+    button.primary {
+      background: var(--grad);
+      border: none;
+      color: #1a120b;
+      box-shadow: 0 6px 24px -8px rgba(255, 140, 80, 0.55);
+    }
+    button.primary:hover:not(:disabled) {
+      box-shadow: 0 10px 30px -8px rgba(255, 140, 80, 0.75);
+      background: var(--grad);
+    }
+    button.danger { color: #ffaaa2; border-color: rgba(255, 107, 94, .28); }
+    .progress-panel {
+      width: min(720px, 100%); border: 1px solid var(--line); border-radius: 14px;
+      padding: 12px 14px; background: var(--card);
+    }
+    .progress-track { height: 4px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; }
+    .progress-fill { height: 100%; width: 0; background: var(--grad); transition: width .25s ease; }
+    .progress-label { margin-top: 8px; color: var(--text-dim); font-size: 12px; }
+
+    /* ---- status ---- */
+    #status {
+      display: none;
+      align-items: center;
+      gap: 9px;
+      font-size: 13px;
+      color: var(--text-dim);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 16px;
+      max-width: min(720px, 100%);
+      text-align: left;
+    }
+    #status:not(:empty) { display: inline-flex; }
+    #status.working::before {
+      content: "";
+      flex: none;
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 194, 75, 0.25);
+      border-top-color: var(--accent-b);
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    footer {
+      margin-top: 34px;
+      font-size: 12px;
+      color: var(--text-faint);
+      text-align: center;
+      line-height: 1.8;
+    }
+    footer a { color: var(--text-dim); }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="mark"><i></i><i></i><i></i><i></i>✨</div>
+    <h1>Finger Frame AI</h1>
+    <div class="sub">
+      Upload a clip of the <b>finger-frame gesture</b> — get it back with an
+      AI-animated version of you living inside the frame, tracked to your
+      fingers.
+    </div>
+  </header>
+
+  <div class="card" id="panel">
+    <div class="step"><span class="n">2</span> Style &amp; direction
+      <span class="opt">— key needed only for the AI restyle</span></div>
+    <p>
+      Restyling runs on <strong>Gemini Omni Flash</strong>
+      (<a href="https://ai.google.dev/gemini-api/docs/omni" target="_blank" rel="noopener">video-to-video editing</a>)
+      with your own key from
+      <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>.
+      It stays in your browser and is sent only to Google's API. No key? Try
+      everything with the placeholder style first.
+    </p>
+    <div class="row2">
+      <div>
+        <div class="field-label">Gemini API key</div>
+        <input id="gem-key" type="password" placeholder="AIza…" autocomplete="off" />
+        <label class="remember"><input type="checkbox" id="gem-remember" /> Remember on this device</label>
+      </div>
+      <div>
+        <label class="field-label" for="style-select"><span class="mini-step">2</span>Style</label>
+        <select id="style-select"></select>
+        <div class="field-help" id="style-description"></div>
+        <label class="field-label" for="style-custom">
+          <span class="mini-step">3</span>Describe your transformation <span id="prompt-requirement">optional</span>
+        </label>
+        <textarea id="style-custom" rows="3" maxlength="1000"
+          aria-describedby="style-description prompt-validation prompt-count"
+          placeholder="Optional — describe what you want the scene to become."></textarea>
+        <div class="prompt-meta">
+          <span id="prompt-validation" role="alert"></span>
+          <span id="prompt-count">0/1000</span>
+        </div>
+        <div class="director-row">
+          <button id="btn-director" type="button">Director assist</button>
+          <span id="director-status" role="status">Optional — creates an editable prompt with Gemini Flash-Lite.</span>
+        </div>
+      </div>
+    </div>
+    <div class="reference-panel" id="reference-image-panel">
+      <label class="field-label" for="reference-image"><span class="mini-step">4</span>Reference image <span id="reference-optional">(optional)</span></label>
+      <p>Use an image to guide the visual style or look of the generated world. JPEG, PNG, or WebP; maximum 8 MB.</p>
+      <div class="reference-picker">
+        <input id="reference-image" type="file" accept="image/jpeg,image/png,image/webp"
+          aria-describedby="reference-image-error reference-capability-reason" />
+        <label class="reference-action" id="reference-image-choose" for="reference-image">Choose reference image</label>
+      </div>
+      <div id="reference-image-preview" class="reference-preview hidden">
+        <img id="reference-image-thumbnail" alt="Selected reference image preview" />
+        <div>
+          <p id="reference-image-metadata"></p>
+          <div class="reference-actions">
+            <label class="reference-action" id="reference-image-replace" for="reference-image">Replace</label>
+            <button id="reference-image-remove" type="button">Remove</button>
+          </div>
+        </div>
+      </div>
+      <p id="reference-image-error" role="alert"></p>
+      <p id="reference-capability-reason" role="status" class="hidden"></p>
+      <div class="effect-options" aria-label="Portal effects">
+        <label class="remember"><input type="checkbox" id="portal-crossing-toggle" checked /> Portal Crossing</label>
+        <label class="remember"><input type="checkbox" id="parallax-toggle" checked /> Subtle parallax</label>
+      </div>
+    </div>
+  </div>
+
+  <label id="drop">
+    <span class="corner tl"></span><span class="corner tr"></span>
+    <span class="corner bl"></span><span class="corner br"></span>
+    <input id="file" type="file" accept="video/*" />
+    <div class="film">🎬</div>
+    <div class="big"><span style="opacity:.55">1 ·</span> Drop a video here, or click to choose</div>
+    <div class="small">MP4, WebM, or MOV · up to 15 seconds and 15 MB.</div>
+  </label>
+
+  <div id="stage">
+    <video id="orig" playsinline muted></video>
+    <video id="sty" playsinline muted crossorigin="anonymous"></video>
+    <div class="preview-grid">
+      <section class="preview-card">
+        <h2>Original</h2>
+        <video id="original-preview" controls playsinline></video>
+      </section>
+      <section class="canvas-wrap">
+        <h2>Portal result</h2>
+        <canvas id="canvas"></canvas>
+      </section>
+    </div>
+    <div id="controls">
+      <button id="btn-generate" class="primary">5 · Generate AI world</button>
+      <button id="btn-placeholder">Try placeholder style</button>
+      <button id="btn-play" disabled>6 · Preview</button>
+      <button id="btn-export" disabled>7 · Download final</button>
+      <button id="btn-cancel" class="danger hidden" type="button">Cancel</button>
+      <button id="btn-reset" type="button">Reset project</button>
+    </div>
+    <div id="progress-panel" class="progress-panel hidden" aria-live="polite">
+      <div class="progress-track"><div id="progress-fill" class="progress-fill"></div></div>
+      <div id="progress-label" class="progress-label"></div>
+    </div>
+    <div id="status"></div>
+  </div>
+
+  <footer>
+    Gemini Omni Flash · MediaPipe hand tracking · runs entirely in your browser<br />
+    <a href="https://sophiamyang.github.io/finger-frame-effect/" target="_blank" rel="noopener">live-camera sibling app</a>
+    ·
+    <a href="https://github.com/sophiamyang/finger-frame-effect-ai" target="_blank" rel="noopener">source on GitHub</a>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

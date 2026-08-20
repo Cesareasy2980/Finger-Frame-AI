@@ -1,0 +1,19 @@
+{
+  "name": "finger-frame-effect-ai",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Reproducibility tooling for the static Finger Frame AI frontend",
+  "engines": {
+    "node": "24.16.0",
+    "npm": "11.13.0"
+  },
+  "packageManager": "npm@11.13.0",
+  "scripts": {
+    "build": "node scripts/build-frontend.mjs",
+    "lint": "node scripts/lint.mjs",
+    "test:unit": "node --test \"tests-js/**/*.test.mjs\"",
+    "test": "npm run lint && node scripts/check-frontend.mjs && npm run test:unit",
+    "serve": "node scripts/serve.mjs"
+  }
+}

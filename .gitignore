@@ -1,0 +1,45 @@
+# --- Media ---------------------------------------------------------------
+# No video/image media is published by default. Recorded footage stays local
+# unless it is your own and you have explicitly whitelisted it below.
+*.mov
+*.mp4
+*.webm
+*.gif
+*.png
+*.jpg
+*.jpeg
+
+# Demo and fixture media are opt-in. Only whitelist clips you own and are
+# willing to publish publicly. See examples/README.md before uncommenting.
+# !examples/final.mp4
+# !examples/final.gif
+# !tests/fixtures/*.mp4
+
+# --- Models --------------------------------------------------------------
+# MediaPipe hand landmarker (~7.8 MB) is downloaded at runtime, not committed.
+*.task
+
+# --- Generated output ----------------------------------------------------
+tests/artifacts/
+dist/
+
+# --- Python --------------------------------------------------------------
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# --- Node ----------------------------------------------------------------
+node_modules/
+
+# --- Environment ---------------------------------------------------------
+.env
+.env.local
+
+# --- Tooling and OS ------------------------------------------------------
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
